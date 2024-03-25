@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+// ブランチテスト
+
 public class KeyLog : MonoBehaviour
 {
     public GameObject nextDirectionObj;
