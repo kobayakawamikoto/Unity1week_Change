@@ -10,11 +10,11 @@ public class GameOverScript : MonoBehaviour
     Camera camera;
     [SerializeField]
     GameObject actor;
-    InputHandler inputHandler;
+    InputHandlerScript ihs;
     // Start is called before the first frame update
     void Start()
     {
-        inputHandler = actor.GetComponent<InputHandler>();
+        ihs = actor.GetComponent<InputHandlerScript>();
     }
 
     // Update is called once per frame
@@ -27,6 +27,6 @@ public class GameOverScript : MonoBehaviour
     {
         Debug.Log("è’ìÀ");
         gameOverCanvas.gameObject.SetActive(true);
-        inputHandler.IsDeath = true;
+        ihs.IsDeath = true;
     }
 }

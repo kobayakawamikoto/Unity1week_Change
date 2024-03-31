@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class GameClearScript : MonoBehaviour
 {
+    // TODO: SetActive(false)となっているコンポーネントの取得方法を調べる
     [SerializeField]
     Canvas gameClearCanvas;
     [SerializeField]
     Camera camera;
     [SerializeField]
     GameObject actor;
-    InputHandler inputHandler;
+    InputHandlerScript ihs;
     // Start is called before the first frame update
     void Start()
     {
-        inputHandler = actor.GetComponent<InputHandler>();
+        ihs = actor.GetComponent<InputHandlerScript>();
     }
 
     // Update is called once per frame
@@ -26,6 +27,6 @@ public class GameClearScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameClearCanvas.gameObject.SetActive(true);
-        inputHandler.IsClear = true;
+        ihs.IsClear = true;
     }
 }

@@ -337,10 +337,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0eb32a8e78d8b946a57baa0b1216edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextDirectionObj: {fileID: 1617580325}
-  actor: {fileID: 498253721970882913}
-  camera: {fileID: 963194227}
-  saveNextDirections: []
+  _nextDirectionObj: {fileID: 1617580325}
+  _actor: {fileID: 498253721970882913}
+  _camera: {fileID: 963194227}
 --- !u!4 &138565840
 Transform:
   m_ObjectHideFlags: 0
@@ -1348,8 +1347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38a65d2ec25adaf4f8bed761304c11a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextDirectionObj: {fileID: 1617580325}
-  player: {fileID: 498253721970882913}
+  _actor: {fileID: 498253721970882913}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1509,7 +1507,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &989055215
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2024,7 +2022,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1456487202}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.407, y: 0.003, z: -0.473}
+  m_LocalPosition: {x: 1.407, y: 0.003, z: -0.58}
   m_LocalScale: {x: 1, y: 0.038622, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2133,7 +2131,7 @@ GameObject:
   - component: {fileID: 1617580327}
   - component: {fileID: 1617580326}
   m_Layer: 0
-  m_Name: NextDirection
+  m_Name: EnumNextDirectionObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2423,8 +2421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9391be5b14f886b40aff284a70d287f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextDirectionObj: {fileID: 1617580325}
-  KeyCommandText: {fileID: 0}
 --- !u!114 &1763333717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2715,6 +2711,7 @@ GameObject:
   - component: {fileID: 1913177057}
   - component: {fileID: 1913177061}
   - component: {fileID: 1913177062}
+  - component: {fileID: 1913177063}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -2794,7 +2791,7 @@ Transform:
   m_GameObject: {fileID: 1913177056}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.509, y: 0.45, z: -5}
-  m_LocalScale: {x: 0.14567, y: 1, z: 1}
+  m_LocalScale: {x: 0.14567, y: 1, z: 2.3316}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2828,6 +2825,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1913177063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1913177056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00d74901da170684da0ba78ab2318774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
+  distance: 2
 --- !u!1 &1988454832
 GameObject:
   m_ObjectHideFlags: 0

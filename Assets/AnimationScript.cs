@@ -7,25 +7,30 @@ using static EnumNextDirectionScript;
 
 public class AnimationScript : MonoBehaviour
 {
-    public GameObject nextDirectionObj;
-    EnumNextDirectionScript enumNextDirectionScript;
-    [SerializeField] GameObject player;
+    private GameObject _endObj;
+    private EnumNextDirectionScript _ends;
+
+    [SerializeField]
+    private GameObject _actor;
+
     private bool isMoveForward = false;
     private bool isRotatePlayer = false;
-    // 目標先の座標
-    private float targetPosition;
-    // 現在の座標
-    private float newPositionWhileMoving;
-    private float cacheNewPositionWhileMoving;
-    private float elapsedTime = 0f;
-    private float interpolationTime = 0.3f; // 補間にかける時間（秒）
-    float rotationSpeed = 800.0f;
+
+    private float _targetPosition;
+
+    private float _positionWhileMoving;
+    private float _cacheNewPositionWhileMoving;
+    private float _elapsedTime = 0f;
+    private float _interpolationTime = 0.3f; // 補間にかける時間（秒）
+
+    private float ROTATION_SPEED = 800.0f;
     // Start is called before the first frame update
     void Start()
     {
-        // 開始時に現在の値を取得
-        newPositionWhileMoving = player.transform.position.z;
-        enumNextDirectionScript = nextDirectionObj.GetComponent<EnumNextDirectionScript>();
+        _positionWhileMoving = _actor.transform.position.z;
+
+        _endObj = GameObject.Find("EnumNextDirectionObj");
+        _ends = _endObj.GetComponent<EnumNextDirectionScript>();
     }
 
     // Update is called once per frame
@@ -35,194 +40,174 @@ public class AnimationScript : MonoBehaviour
         RotatePlayer();
     }
 
+    /*
+     * キャラを移動させる処理
+     * _interpolationTimeで指定した秒数で移動を完了する
+     */
     void MoveForward()
     {
         if (isMoveForward == false) return;
 
-        float t = elapsedTime / interpolationTime;
+        float t = _elapsedTime / _interpolationTime;
 
         // 補間処理
-        newPositionWhileMoving = Mathf.Lerp(cacheNewPositionWhileMoving, targetPosition, t);
+        _positionWhileMoving = Mathf.Lerp(_cacheNewPositionWhileMoving, _targetPosition, t);
 
-        //float moveSpeed = 5f;
-        //transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-
-        switch (enumNextDirectionScript.nextDirection)
+        switch (_ends.nextDirection)
         {
             case EnumNextDirectionScript.NextDirection.Forward:
                 // オブジェクトの位置を更新
-                player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, newPositionWhileMoving);
+                _actor.transform.position = new Vector3(_actor.transform.position.x, _actor.transform.position.y, _positionWhileMoving);
                 break;
             case EnumNextDirectionScript.NextDirection.Backward:
-                // オブジェクトの位置を更新
-                player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, newPositionWhileMoving);
+                _actor.transform.position = new Vector3(_actor.transform.position.x, _actor.transform.position.y, _positionWhileMoving);
                 break;
             case EnumNextDirectionScript.NextDirection.Left:
-                // オブジェクトの位置を更新
-                player.transform.position = new Vector3(newPositionWhileMoving, player.transform.position.y, player.transform.position.z);
+                _actor.transform.position = new Vector3(_positionWhileMoving, _actor.transform.position.y, _actor.transform.position.z);
                 break;
             case EnumNextDirectionScript.NextDirection.Right:
-                // オブジェクトの位置を更新
-                player.transform.position = new Vector3(newPositionWhileMoving, player.transform.position.y, player.transform.position.z);
+                _actor.transform.position = new Vector3(_positionWhileMoving, _actor.transform.position.y, _actor.transform.position.z);
                 break;
             default:
-                Debug.Log("MoveForward");
                 break;
         }
 
-        elapsedTime += Time.deltaTime;
+        _elapsedTime += Time.deltaTime;
 
-        // 目標値に近づいたら加算を停止する
-        if (Mathf.Abs(Mathf.Abs(newPositionWhileMoving) - Mathf.Abs(targetPosition)) <= 0.01f)
+        // _targetPositionに近づいたら最終的に到達してほしい座標にワープさせる
+        if (Mathf.Abs(Mathf.Abs(_positionWhileMoving) - Mathf.Abs(_targetPosition)) <= 0.01f)
         {
-            switch (enumNextDirectionScript.nextDirection)
+            switch (_ends.nextDirection)
             {
                 case EnumNextDirectionScript.NextDirection.Forward:
-                    player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, targetPosition);
+                    _actor.transform.position = new Vector3(_actor.transform.position.x, _actor.transform.position.y, _targetPosition);
                     break;
                 case EnumNextDirectionScript.NextDirection.Backward:
-                    player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, targetPosition);
+                    _actor.transform.position = new Vector3(_actor.transform.position.x, _actor.transform.position.y, _targetPosition);
                     break;
                 case EnumNextDirectionScript.NextDirection.Left:
-                    player.transform.position = new Vector3(targetPosition, player.transform.position.y, player.transform.position.z);
+                    _actor.transform.position = new Vector3(_targetPosition, _actor.transform.position.y, _actor.transform.position.z);
                     break;
                 case EnumNextDirectionScript.NextDirection.Right:
-                    player.transform.position = new Vector3(targetPosition, player.transform.position.y, player.transform.position.z);
+                    _actor.transform.position = new Vector3(_targetPosition, _actor.transform.position.y, _actor.transform.position.z);
                     break;
                 default:
-                    Debug.Log("MoveForward");
                     break;
             }
             isMoveForward = false;
         }
     }
 
-    void ChangeMoveForwardState()
+    /*
+     * Spaceキーを押すと再生されるアニメーションからトリガーされる関数
+     * 移動を始める前に各変数の初期化をしています
+     */
+    void InitializeVariableBeforeMoveForward()
     {
         isRotatePlayer = false;
         isMoveForward = true;
-        //Debug.Log(enumNextDirectionScript.nextDirection);
-        switch (enumNextDirectionScript.nextDirection)
+
+        switch (_ends.nextDirection)
         {
             case EnumNextDirectionScript.NextDirection.Forward:
-                newPositionWhileMoving = player.transform.position.z;
-                cacheNewPositionWhileMoving = newPositionWhileMoving;
-                targetPosition = newPositionWhileMoving + 1;
+                _positionWhileMoving = _actor.transform.position.z;
+                _cacheNewPositionWhileMoving = _positionWhileMoving;
+                _targetPosition = _positionWhileMoving + 1;
                 break;
             case EnumNextDirectionScript.NextDirection.Backward:
-                newPositionWhileMoving = player.transform.position.z;
-                cacheNewPositionWhileMoving = newPositionWhileMoving;
-                targetPosition = newPositionWhileMoving - 1;
+                _positionWhileMoving = _actor.transform.position.z;
+                _cacheNewPositionWhileMoving = _positionWhileMoving;
+                _targetPosition = _positionWhileMoving - 1;
                 break;
             case EnumNextDirectionScript.NextDirection.Left:
-                newPositionWhileMoving = player.transform.position.x;
-                cacheNewPositionWhileMoving = newPositionWhileMoving;
-                targetPosition = newPositionWhileMoving - 1;
+                _positionWhileMoving = _actor.transform.position.x;
+                _cacheNewPositionWhileMoving = _positionWhileMoving;
+                _targetPosition = _positionWhileMoving - 1;
                 break;
             case EnumNextDirectionScript.NextDirection.Right:
-                newPositionWhileMoving = player.transform.position.x;
-                cacheNewPositionWhileMoving = newPositionWhileMoving;
-                targetPosition = newPositionWhileMoving + 1;
+                _positionWhileMoving = _actor.transform.position.x;
+                _cacheNewPositionWhileMoving = _positionWhileMoving;
+                _targetPosition = _positionWhileMoving + 1;
                 break;
             default:
-                Debug.Log("ChangeMoveForwardState");
                 break;
         }
         
-        elapsedTime = 0;
+        _elapsedTime = 0;
     }
 
+    /*
+     * キャラを回転させる処理
+     */
     void RotatePlayer()
     {
         if (isRotatePlayer == false) return;
 
-        Vector3 playerForward = player.transform.forward;
-        Vector3 nextDirection;
-        switch (enumNextDirectionScript.nextDirection)
+        Vector3 playerForwardVec = _actor.transform.forward;
+        Vector3 nextDirectionVec;
+
+        switch (_ends.nextDirection)
         {
             case EnumNextDirectionScript.NextDirection.Forward:
-                nextDirection = Vector3.forward;
-                // 半端な数字にならないように
-                if (Mathf.Abs(playerForward.z - nextDirection.z) <= 0.1f)
+                nextDirectionVec = Vector3.forward;
+
+                // 最終的に到達してほしい回転値までワープさせる
+                if (Mathf.Abs(playerForwardVec.z - nextDirectionVec.z) <= 0.1f)
                 {
                     transform.rotation = Quaternion.Euler(0,0,0);
                     break;
                 }
 
-                // 外積を使用してプレイヤーを回転する
-                if (Cross(playerForward, nextDirection).y < 0)
-                {
-                    this.transform.Rotate(0, 1 * Time.deltaTime * rotationSpeed, 0);
-                }
-                else
-                {
-                    this.transform.Rotate(0, -1 * Time.deltaTime * rotationSpeed, 0);
-                }
+                // 外積を使用してプレイヤーを回転させる
+                RotatePerFrame(playerForwardVec, nextDirectionVec);
                 break;
 
             case EnumNextDirectionScript.NextDirection.Backward:
-                nextDirection = -Vector3.forward;
-                if (Mathf.Abs(playerForward.z - nextDirection.z) <= 0.1f)
+                nextDirectionVec = -Vector3.forward;
+                if (Mathf.Abs(playerForwardVec.z - nextDirectionVec.z) <= 0.1f)
                 {
                     transform.rotation = Quaternion.Euler(0, 180, 0);
                     break;
                 }
 
-                // 外積を使用してプレイヤーを回転する
-                if (Cross(playerForward, nextDirection).y < 0)
-                {
-                    this.transform.Rotate(0, 1 * Time.deltaTime * rotationSpeed, 0);
-                }
-                else
-                {
-                    this.transform.Rotate(0, -1 * Time.deltaTime * rotationSpeed, 0);
-                }
+                RotatePerFrame(playerForwardVec, nextDirectionVec);
                 break;
+
             case EnumNextDirectionScript.NextDirection.Left:
-                nextDirection = -Vector3.right;
-                if (Mathf.Abs(playerForward.x - nextDirection.x) <= 0.1f)
+                nextDirectionVec = -Vector3.right;
+                if (Mathf.Abs(playerForwardVec.x - nextDirectionVec.x) <= 0.1f)
                 {
                     transform.rotation = Quaternion.Euler(0, -90, 0);
                     break;
                 }
 
-                // 外積を使用してプレイヤーを回転する
-                if (Cross(playerForward, nextDirection).y < 0)
-                {
-                    this.transform.Rotate(0, 1 * Time.deltaTime * rotationSpeed, 0);
-                }
-                else
-                {
-                    this.transform.Rotate(0, -1 * Time.deltaTime * rotationSpeed, 0);
-                }
+                RotatePerFrame(playerForwardVec, nextDirectionVec);
                 break;
+
             case EnumNextDirectionScript.NextDirection.Right:
-                nextDirection = Vector3.right;
-                if (Mathf.Abs(playerForward.x - nextDirection.x) <= 0.1f)
+                nextDirectionVec = Vector3.right;
+                if (Mathf.Abs(playerForwardVec.x - nextDirectionVec.x) <= 0.1f)
                 {
                     transform.rotation = Quaternion.Euler(0, 90, 0);
                     break;
                 }
 
-                // 外積を使用してプレイヤーを回転する
-                if (Cross(playerForward, nextDirection).y < 0)
-                {
-                    this.transform.Rotate(0, 1 * Time.deltaTime * rotationSpeed, 0);
-                }
-                else
-                {
-                    this.transform.Rotate(0, -1 * Time.deltaTime * rotationSpeed, 0);
-                }
+                RotatePerFrame(playerForwardVec, nextDirectionVec);
                 break;
+
             default:
-                nextDirection = transform.forward;
+                nextDirectionVec = transform.forward;
                 break;
         }
-        Debug.DrawRay(this.transform.position, playerForward * 100, Color.green, 2);
-        Debug.DrawRay(this.transform.position, nextDirection * 10, Color.red, 2);
+        Debug.DrawRay(this.transform.position, playerForwardVec * 100, Color.green, 2);
+        Debug.DrawRay(this.transform.position, nextDirectionVec * 10, Color.red, 2);
     }
 
-    void ChangeRotatePlayerState()
+    /*
+     * Spaceキーを押すと再生されるアニメーションからトリガーされる関数
+     * 回転を始める前に変数の初期化をしています
+     */
+    void InitializeVariableBeforeRotatePlayer()
     {
         isRotatePlayer = true;
     }
@@ -240,4 +225,43 @@ public class AnimationScript : MonoBehaviour
 
         return cross2;
     }
+
+    /*
+     * フレーム毎にキャラを回転させる処理
+     * 二つのベクトルの外積の結果から回転する方向を決めています
+     * ROTATION_SPEEDで回転速度を変えられます
+     */
+    void RotatePerFrame(Vector3 playerForwardVec, Vector3 nextDirectionVec)
+    {
+        if (Cross(playerForwardVec, nextDirectionVec).y < 0)
+        {
+            this.transform.Rotate(0, 1 * Time.deltaTime * ROTATION_SPEED, 0);
+        }
+        else
+        {
+            this.transform.Rotate(0, -1 * Time.deltaTime * ROTATION_SPEED, 0);
+        }
+    }
+
+    /*
+    void WarpTargetRotation(Vector3 playerForwardVec, Vector3 nextDirectionVec, float RotationValue)
+    {
+        if(nextDirectionVec == Vector3.forward && Mathf.Abs(playerForwardVec.z - nextDirectionVec.z) <= 0.1f)
+        { 
+            transform.rotation = Quaternion.Euler(0, RotationValue, 0);
+        }
+        else if (nextDirectionVec == -Vector3.forward && (Mathf.Abs(playerForwardVec.z - nextDirectionVec.z) <= 0.1f))
+        {
+            transform.rotation = Quaternion.Euler(0, RotationValue, 0);
+        }
+        else if (nextDirectionVec == -Vector3.right && (Mathf.Abs(playerForwardVec.x - nextDirectionVec.x) <= 0.1f))
+        {
+            transform.rotation = Quaternion.Euler(0, RotationValue, 0);
+        }
+        else if (nextDirectionVec == -Vector3.right && (Mathf.Abs(playerForwardVec.x - nextDirectionVec.x) <= 0.1f))
+        {
+            transform.rotation = Quaternion.Euler(0, RotationValue, 0);
+        }
+    }
+    */
 }
