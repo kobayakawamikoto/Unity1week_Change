@@ -31,7 +31,7 @@ public class KeyLog : MonoBehaviour
             KeyCommandText.text = "";
             for (int i = 0; i < inputHandler.saveNextDirections.Count; i++)
             {
-                Debug.Log(inputHandler.saveNextDirections[i]);
+                //Debug.Log(inputHandler.saveNextDirections[i]);
                 //KeyCommandText.text = "ª";
                 if(inputHandler.saveNextDirections[i].nextDirection == EnumNextDirectionScript.NextDirection.Forward)
                 {
