@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameOverScript : MonoBehaviour
+public class GameOverScripts : MonoBehaviour
 {
     [SerializeField]
     Canvas gameOverCanvas;
@@ -10,11 +10,11 @@ public class GameOverScript : MonoBehaviour
     Camera camera;
     [SerializeField]
     GameObject actor;
-    InputHandlerScript ihs;
+    InputHandlerScripts ihs;
     // Start is called before the first frame update
     void Start()
     {
-        ihs = actor.GetComponent<InputHandlerScript>();
+        ihs = actor.GetComponent<InputHandlerScripts>();
     }
 
     // Update is called once per frame

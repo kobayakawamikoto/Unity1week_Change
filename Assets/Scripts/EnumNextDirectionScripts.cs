@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnumNextDirectionScript : MonoBehaviour
+public class EnumNextDirectionScripts : MonoBehaviour
 {
     public enum NextDirection
     {
