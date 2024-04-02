@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Commands
+public abstract class Command
 {
     public abstract void Execute(Animator anim);
 }
 
-public class PerformForward : Commands
+public class PerformForward : Command
 {
     public override void Execute(Animator anim)
     {
@@ -15,7 +15,7 @@ public class PerformForward : Commands
     }
 }
 
-public class PerformBackward : Commands
+public class PerformBackward : Command
 {
     public override void Execute(Animator anim)
     {
@@ -23,7 +23,7 @@ public class PerformBackward : Commands
     }
 }
 
-public class PerformLeft : Commands
+public class PerformLeft : Command
 {
     public override void Execute(Animator anim)
     {
@@ -31,7 +31,7 @@ public class PerformLeft : Commands
     }
 }
 
-public class PerformRight : Commands
+public class PerformRight : Command
 {
     public override void Execute(Animator anim)
     {
@@ -39,7 +39,7 @@ public class PerformRight : Commands
     }
 }
 
-public class PerformJump : Commands
+public class PerformJump : Command
 {
     public override void Execute(Animator anim)
     {
@@ -47,7 +47,7 @@ public class PerformJump : Commands
     }
 }
 
-public class PerformKick : Commands
+public class PerformKick : Command
 {
     public override void Execute(Animator anim)
     {
@@ -55,7 +55,7 @@ public class PerformKick : Commands
     }
 }
 
-public class PerformPunch : Commands
+public class PerformPunch : Command
 {
     public override void Execute(Animator anim)
     {
@@ -63,7 +63,7 @@ public class PerformPunch : Commands
     }
 }
 
-public class DoNothing : Commands
+public class DoNothing : Command
 {
     public override void Execute(Animator anim)
     {

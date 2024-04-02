@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UIElements;
-using static EnumNextDirectionScripts;
+using static EnumNextDirectionScript;
 
-public class AnimationScripts : MonoBehaviour
+public class AnimationScript : MonoBehaviour
 {
     private GameObject _endObj;
-    private EnumNextDirectionScripts _ends;
+    private EnumNextDirectionScript _ends;
 
     [SerializeField]
     private GameObject _actor;
@@ -30,7 +30,7 @@ public class AnimationScripts : MonoBehaviour
         _positionWhileMoving = _actor.transform.position.z;
 
         _endObj = GameObject.Find("EnumNextDirectionObj");
-        _ends = _endObj.GetComponent<EnumNextDirectionScripts>();
+        _ends = _endObj.GetComponent<EnumNextDirectionScript>();
     }
 
     // Update is called once per frame
@@ -55,17 +55,17 @@ public class AnimationScripts : MonoBehaviour
 
         switch (_ends.nextDirection)
         {
-            case EnumNextDirectionScripts.NextDirection.Forward:
+            case EnumNextDirectionScript.NextDirection.Forward:
                 // オブジェクトの位置を更新
                 _actor.transform.position = new Vector3(_actor.transform.position.x, _actor.transform.position.y, _positionWhileMoving);
                 break;
-            case EnumNextDirectionScripts.NextDirection.Backward:
+            case EnumNextDirectionScript.NextDirection.Backward:
                 _actor.transform.position = new Vector3(_actor.transform.position.x, _actor.transform.position.y, _positionWhileMoving);
                 break;
-            case EnumNextDirectionScripts.NextDirection.Left:
+            case EnumNextDirectionScript.NextDirection.Left:
                 _actor.transform.position = new Vector3(_positionWhileMoving, _actor.transform.position.y, _actor.transform.position.z);
                 break;
-            case EnumNextDirectionScripts.NextDirection.Right:
+            case EnumNextDirectionScript.NextDirection.Right:
                 _actor.transform.position = new Vector3(_positionWhileMoving, _actor.transform.position.y, _actor.transform.position.z);
                 break;
             default:
@@ -79,16 +79,16 @@ public class AnimationScripts : MonoBehaviour
         {
             switch (_ends.nextDirection)
             {
-                case EnumNextDirectionScripts.NextDirection.Forward:
+                case EnumNextDirectionScript.NextDirection.Forward:
                     _actor.transform.position = new Vector3(_actor.transform.position.x, _actor.transform.position.y, _targetPosition);
                     break;
-                case EnumNextDirectionScripts.NextDirection.Backward:
+                case EnumNextDirectionScript.NextDirection.Backward:
                     _actor.transform.position = new Vector3(_actor.transform.position.x, _actor.transform.position.y, _targetPosition);
                     break;
-                case EnumNextDirectionScripts.NextDirection.Left:
+                case EnumNextDirectionScript.NextDirection.Left:
                     _actor.transform.position = new Vector3(_targetPosition, _actor.transform.position.y, _actor.transform.position.z);
                     break;
-                case EnumNextDirectionScripts.NextDirection.Right:
+                case EnumNextDirectionScript.NextDirection.Right:
                     _actor.transform.position = new Vector3(_targetPosition, _actor.transform.position.y, _actor.transform.position.z);
                     break;
                 default:
@@ -109,22 +109,22 @@ public class AnimationScripts : MonoBehaviour
 
         switch (_ends.nextDirection)
         {
-            case EnumNextDirectionScripts.NextDirection.Forward:
+            case EnumNextDirectionScript.NextDirection.Forward:
                 _positionWhileMoving = _actor.transform.position.z;
                 _cacheNewPositionWhileMoving = _positionWhileMoving;
                 _targetPosition = _positionWhileMoving + 1;
                 break;
-            case EnumNextDirectionScripts.NextDirection.Backward:
+            case EnumNextDirectionScript.NextDirection.Backward:
                 _positionWhileMoving = _actor.transform.position.z;
                 _cacheNewPositionWhileMoving = _positionWhileMoving;
                 _targetPosition = _positionWhileMoving - 1;
                 break;
-            case EnumNextDirectionScripts.NextDirection.Left:
+            case EnumNextDirectionScript.NextDirection.Left:
                 _positionWhileMoving = _actor.transform.position.x;
                 _cacheNewPositionWhileMoving = _positionWhileMoving;
                 _targetPosition = _positionWhileMoving - 1;
                 break;
-            case EnumNextDirectionScripts.NextDirection.Right:
+            case EnumNextDirectionScript.NextDirection.Right:
                 _positionWhileMoving = _actor.transform.position.x;
                 _cacheNewPositionWhileMoving = _positionWhileMoving;
                 _targetPosition = _positionWhileMoving + 1;
@@ -148,7 +148,7 @@ public class AnimationScripts : MonoBehaviour
 
         switch (_ends.nextDirection)
         {
-            case EnumNextDirectionScripts.NextDirection.Forward:
+            case EnumNextDirectionScript.NextDirection.Forward:
                 nextDirectionVec = Vector3.forward;
 
                 // 最終的に到達してほしい回転値までワープさせる
@@ -162,7 +162,7 @@ public class AnimationScripts : MonoBehaviour
                 RotatePerFrame(playerForwardVec, nextDirectionVec);
                 break;
 
-            case EnumNextDirectionScripts.NextDirection.Backward:
+            case EnumNextDirectionScript.NextDirection.Backward:
                 nextDirectionVec = -Vector3.forward;
                 if (Mathf.Abs(playerForwardVec.z - nextDirectionVec.z) <= 0.1f)
                 {
@@ -173,7 +173,7 @@ public class AnimationScripts : MonoBehaviour
                 RotatePerFrame(playerForwardVec, nextDirectionVec);
                 break;
 
-            case EnumNextDirectionScripts.NextDirection.Left:
+            case EnumNextDirectionScript.NextDirection.Left:
                 nextDirectionVec = -Vector3.right;
                 if (Mathf.Abs(playerForwardVec.x - nextDirectionVec.x) <= 0.1f)
                 {
@@ -184,7 +184,7 @@ public class AnimationScripts : MonoBehaviour
                 RotatePerFrame(playerForwardVec, nextDirectionVec);
                 break;
 
-            case EnumNextDirectionScripts.NextDirection.Right:
+            case EnumNextDirectionScript.NextDirection.Right:
                 nextDirectionVec = Vector3.right;
                 if (Mathf.Abs(playerForwardVec.x - nextDirectionVec.x) <= 0.1f)
                 {

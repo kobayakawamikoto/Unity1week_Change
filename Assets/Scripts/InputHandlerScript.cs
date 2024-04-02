@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class InputHandlerScripts : MonoBehaviour
+public class InputHandlerScript : MonoBehaviour
 {
     [SerializeField]
     private GameObject _nextDirectionObj;
@@ -16,14 +16,14 @@ public class InputHandlerScripts : MonoBehaviour
 
     private Animator _anim;
 
-    private Commands _upArrow, _downArrow, _leftArrow, _rightArrow;
+    private Command _upArrow, _downArrow, _leftArrow, _rightArrow;
     [System.NonSerialized] 
-    public List<Commands> oldCommands = new List<Commands>();
+    public List<Command> oldCommands = new List<Command>();
 
-    private EnumNextDirectionScripts _ends;
-    private EnumNextDirectionScripts _endsUpArrow, _endsDownArrow, _endsLeftArrow, _endsRightArrow;
+    private EnumNextDirectionScript _ends;
+    private EnumNextDirectionScript _endsUpArrow, _endsDownArrow, _endsLeftArrow, _endsRightArrow;
     [System.NonSerialized] 
-    public List<EnumNextDirectionScripts> nextDirections = new List<EnumNextDirectionScripts>();
+    public List<EnumNextDirectionScript> nextDirections = new List<EnumNextDirectionScript>();
 
     private GameObject _sliderCanvas;
     private Slider _staminaSlider;
@@ -54,15 +54,15 @@ public class InputHandlerScripts : MonoBehaviour
         _leftArrow = new PerformLeft();
         _rightArrow = new PerformRight();
         _anim = _actor.GetComponent<Animator>();
-        _ends = _nextDirectionObj.GetComponent<EnumNextDirectionScripts>();
-        _endsUpArrow = new EnumNextDirectionScripts();
-        _endsUpArrow.nextDirection = EnumNextDirectionScripts.NextDirection.Forward;
-        _endsDownArrow = new EnumNextDirectionScripts();
-        _endsDownArrow.nextDirection = EnumNextDirectionScripts.NextDirection.Backward;
-        _endsLeftArrow = new EnumNextDirectionScripts();
-        _endsLeftArrow.nextDirection = EnumNextDirectionScripts.NextDirection.Left;
-        _endsRightArrow = new EnumNextDirectionScripts();
-        _endsRightArrow.nextDirection = EnumNextDirectionScripts.NextDirection.Right;
+        _ends = _nextDirectionObj.GetComponent<EnumNextDirectionScript>();
+        _endsUpArrow = new EnumNextDirectionScript();
+        _endsUpArrow.nextDirection = EnumNextDirectionScript.NextDirection.Forward;
+        _endsDownArrow = new EnumNextDirectionScript();
+        _endsDownArrow.nextDirection = EnumNextDirectionScript.NextDirection.Backward;
+        _endsLeftArrow = new EnumNextDirectionScript();
+        _endsLeftArrow.nextDirection = EnumNextDirectionScript.NextDirection.Left;
+        _endsRightArrow = new EnumNextDirectionScript();
+        _endsRightArrow.nextDirection = EnumNextDirectionScript.NextDirection.Right;
         _sliderCanvas = GameObject.Find("SliderCanvas");
         Slider[] sliders = _sliderCanvas.GetComponentsInChildren<Slider>();
         // スライダーが1つ以上見つかった場合

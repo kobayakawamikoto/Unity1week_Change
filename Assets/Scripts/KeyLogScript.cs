@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class KeyLogScripts : MonoBehaviour
+public class KeyLogScript : MonoBehaviour
 {
     private GameObject _endObj;
-    private EnumNextDirectionScripts _ends;
+    private EnumNextDirectionScript _ends;
     private GameObject _inputHandlerObj;
-    private InputHandlerScripts _ihs;
+    private InputHandlerScript _ihs;
     private int _cacheOldCommandsCount = 0;
     private TextMeshProUGUI _KeyCommandText;
     // Start is called before the first frame update
     void Start()
     {
         _endObj = GameObject.Find("EnumNextDirectionObj");
-        _ends = _endObj.GetComponent<EnumNextDirectionScripts>();
+        _ends = _endObj.GetComponent<EnumNextDirectionScript>();
 
         _inputHandlerObj = GameObject.Find("InputHandler");
-        _ihs = _inputHandlerObj.GetComponent<InputHandlerScripts>();
+        _ihs = _inputHandlerObj.GetComponent<InputHandlerScript>();
 
         _KeyCommandText = GetComponent<TextMeshProUGUI>();
     }
@@ -40,19 +40,19 @@ public class KeyLogScripts : MonoBehaviour
         _KeyCommandText.text = "";
         for (int i = 0; i < _ihs.nextDirections.Count; i++)
         {
-            if (_ihs.nextDirections[i].nextDirection == EnumNextDirectionScripts.NextDirection.Forward)
+            if (_ihs.nextDirections[i].nextDirection == EnumNextDirectionScript.NextDirection.Forward)
             {
                 _KeyCommandText.text += "ª\n";
             }
-            else if (_ihs.nextDirections[i].nextDirection == EnumNextDirectionScripts.NextDirection.Backward)
+            else if (_ihs.nextDirections[i].nextDirection == EnumNextDirectionScript.NextDirection.Backward)
             {
                 _KeyCommandText.text += "«\n";
             }
-            else if (_ihs.nextDirections[i].nextDirection == EnumNextDirectionScripts.NextDirection.Left)
+            else if (_ihs.nextDirections[i].nextDirection == EnumNextDirectionScript.NextDirection.Left)
             {
                 _KeyCommandText.text += "©\n";
             }
-            else if (_ihs.nextDirections[i].nextDirection == EnumNextDirectionScripts.NextDirection.Right)
+            else if (_ihs.nextDirections[i].nextDirection == EnumNextDirectionScript.NextDirection.Right)
             {
                 _KeyCommandText.text += "¨\n";
             }

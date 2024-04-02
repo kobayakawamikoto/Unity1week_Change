@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameClearScripts : MonoBehaviour
+public class GameClearScript : MonoBehaviour
 {
     // TODO: SetActive(false)となっているコンポーネントの取得方法を調べる
     [SerializeField]
@@ -11,11 +11,11 @@ public class GameClearScripts : MonoBehaviour
     Camera camera;
     [SerializeField]
     GameObject actor;
-    InputHandlerScripts ihs;
+    InputHandlerScript ihs;
     // Start is called before the first frame update
     void Start()
     {
-        ihs = actor.GetComponent<InputHandlerScripts>();
+        ihs = actor.GetComponent<InputHandlerScript>();
     }
 
     // Update is called once per frame
